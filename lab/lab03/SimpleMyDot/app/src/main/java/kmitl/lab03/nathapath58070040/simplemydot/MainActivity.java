@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import kmitl.lab03.nathapath58070040.simplemydot.model.Dot;
@@ -15,6 +16,7 @@ implements Dot.OnDotChangedListener{
 
     private DotView dotView;
     private Dot dot;
+    private ArrayList<Dot> allDots;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,25 +25,33 @@ implements Dot.OnDotChangedListener{
 
         dotView = (DotView) findViewById(R.id.dotView);
 
-        dot = new Dot(this, 0, 0, 30);
+        allDots = new ArrayList<>();
     }
 
     public void onRandomDot(View view) {
         //Random a dot
+
+        dot = new Dot(this, 0, 0, 30);
         Random random = new Random();
         int centerX = random.nextInt(1000);
         int centerY = random.nextInt(1000);
         this.dot.setCenterX(centerX);
         this.dot.setCenterY(centerY);
 
+        allDots.add(dot);
 
 
     }
 
     @Override
     public void onDotChanged(Dot dot) {
-        dotView.setDot(dot);
+        dotView.setDot(allDots);
         dotView.invalidate();
 
+    }
+
+    public void onClear(View view){
+        allDots.clear();
+        dotView.invalidate();
     }
 }

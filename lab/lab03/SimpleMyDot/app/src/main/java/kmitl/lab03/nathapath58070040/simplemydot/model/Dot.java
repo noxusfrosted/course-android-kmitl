@@ -6,7 +6,7 @@ package kmitl.lab03.nathapath58070040.simplemydot.model;
 
 public class Dot {
 
-    public interface OnDotChangedListener{
+    public interface OnDotChangedListener {
         void onDotChanged(Dot dot);
     }
 
