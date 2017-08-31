@@ -20,18 +20,40 @@ public class Dot {
     private int centerY;
     private int radius;
 
-    public Dot(OnDotChangedListener listener, int centerX, int centerY, int radius) {
+    public int getColorR() {
+        return colorR;
+    }
+
+    public int getColorG() {
+        return colorG;
+    }
+
+    public int getColorB() {
+        return colorB;
+    }
+
+    private int colorR;
+    private int colorG;
+    private int colorB;
+
+    public Dot(OnDotChangedListener listener, int centerX, int centerY, int radius, int colorR, int colorG, int colorB) {
         this.listener = listener;
         this.centerX = centerX;
         this.centerY = centerY;
         this.radius = radius;
+        this.colorR = colorR;
+        this.colorG = colorG;
+        this.colorB = colorB;
     }
 
-    public Dot(int centerX, int centerY, int radius) {
+    public Dot(int centerX, int centerY, int radius, int colorR, int colorG, int colorB) {
 
         this.centerX = centerX;
         this.centerY = centerY;
         this.radius = radius;
+        this.colorR = colorR;
+        this.colorG = colorG;
+        this.colorB = colorB;
 
         this.listener.onDotChanged(this);
     }

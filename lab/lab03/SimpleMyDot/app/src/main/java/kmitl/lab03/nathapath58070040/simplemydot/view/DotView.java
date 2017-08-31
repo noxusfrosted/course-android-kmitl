@@ -31,14 +31,12 @@ public class DotView extends View {
     }
 
 
-
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        paint.setColor(Color.RED);
         if (allDots != null) {
-            for(Dot dot : allDots){
+            for (Dot dot : allDots) {
+                paint.setARGB(255, dot.getColorR(), dot.getColorG(), dot.getColorB());
                 canvas.drawCircle(dot.getCenterX(), dot.getCenterY(), 30, paint);
             }
 
