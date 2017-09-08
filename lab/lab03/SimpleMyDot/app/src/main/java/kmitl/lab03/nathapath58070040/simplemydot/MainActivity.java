@@ -1,15 +1,23 @@
 package kmitl.lab03.nathapath58070040.simplemydot;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 import kmitl.lab03.nathapath58070040.simplemydot.model.Dot;
 import kmitl.lab03.nathapath58070040.simplemydot.view.DotView;
+import model.DotParcelable;
+import model.DotSerializable;
 
 public class MainActivity extends AppCompatActivity
         implements Dot.OnDotChangedListener {
@@ -23,6 +31,33 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Button btnOpenActivity = (Button) findViewById(R.id.btnOpenActivity);
+
+        final DotSerializable dotSerializable = new DotSerializable();
+        dotSerializable.setCenterX(150);
+        dotSerializable.setCenterY(150);
+        dotSerializable.setColor(Color.RED);
+        dotSerializable.setRadius(30);
+
+        final DotParcelable dotParcelable = new DotParcelable(149, 149 , 29);
+
+
+        btnOpenActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,
+                        SecondActivity.class);
+
+                intent.putExtra("xValue", 30);
+                intent.putExtra("dotSerializable", dotSerializable);
+
+                //parcelable
+                intent.putExtra("dotParcelable", dotParcelable);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         dotView = (DotView) findViewById(R.id.dotView);
         allDots = new ArrayList<>();
