@@ -61,6 +61,10 @@ public class MainActivity extends AppCompatActivity
         dots.addDot(newDot);
     }
 
+    public void onUndo(View view){
+        dots.undoDot();
+    }
+
     public void onRemoveAll(View view) {
         dots.clearAll();
     }

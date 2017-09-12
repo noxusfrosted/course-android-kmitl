@@ -39,6 +39,12 @@ public class Dots {
         this.allDot.add(dot);
         this.listener.onDotChanged(this);
     }
+    public void undoDot(){
+        if (allDot.size() != 0){
+            this.allDot.remove(allDot.size()-1);
+        }
+        this.listener.onDotChanged(this);
+    }
 
     public int findDot(int x, int y){
         for(int i = 0; i < allDot.size(); i++){
