@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity
         Random random = new Random();
         int centerX = random.nextInt(dotView.getWidth());
         int centerY = random.nextInt(dotView.getHeight());
-        Dot newDot = new Dot(centerX, centerY, 50, new Colors().getColor());
+        Dot newDot = new Dot(centerX, centerY, 30, new Colors().getColor());
         dots.addDot(newDot);
     }
 
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity
     public void onDotViewPressed(int x, int y){
         int dotPosition = dots.findDot(x, y);
         if(dotPosition == -1) {
-            Dot newDot = new Dot(x, y, 50, new Colors().getColor());
+            Dot newDot = new Dot(x, y, 30, new Colors().getColor());
             dots.addDot(newDot);
         }
         else{

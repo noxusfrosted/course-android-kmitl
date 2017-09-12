@@ -1,27 +1,24 @@
 package kmitl.lab03.nathapath58070040.simplemydot;
 
 
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AlertDialog;
+
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import java.io.ByteArrayOutputStream;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
+
 import java.util.Random;
 
 import kmitl.lab03.nathapath58070040.simplemydot.model.Colors;
@@ -35,8 +32,6 @@ public class MainActivity extends AppCompatActivity
 
     private DotView dotView;
     private Dots dots;
-
-    private Context context;
 
 
     @Override
@@ -62,7 +57,7 @@ public class MainActivity extends AppCompatActivity
         Random random = new Random();
         int centerX = random.nextInt(dotView.getWidth());
         int centerY = random.nextInt(dotView.getHeight());
-        Dot newDot = new Dot(centerX, centerY, 50, new Colors().getColor());
+        Dot newDot = new Dot(centerX, centerY, 30, new Colors().getColor());
         dots.addDot(newDot);
     }
 
@@ -81,7 +76,7 @@ public class MainActivity extends AppCompatActivity
     public void onDotViewPressed(int x, int y) {
         int dotPosition = dots.findDot(x, y);
         if (dotPosition == -1) {
-            Dot newDot = new Dot(x, y, 50, new Colors().getColor());
+            Dot newDot = new Dot(x, y, 30, new Colors().getColor());
             dots.addDot(newDot);
         } else {
             dots.removeBy(dotPosition);
@@ -90,74 +85,46 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onShare(View view) {
-
-        View v1 = dotView.getRootView();
-        v1.setDrawingCacheEnabled(true);
-        Bitmap bitmap = v1.getDrawingCache();
-
-        context = getApplicationContext();
-
-        Uri uri = getImageUri(context, bitmap);
-
-        share_screen(uri, "facebook");
-    }
-
-    public static Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(),
-                inImage, "", "");
-        return Uri.parse(path);
-    }
-
-    public void share_screen(Uri pngUri, final String sharingapp) {
-
-        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
-        shareIntent.setType("image/png");
-        shareIntent
-                .putExtra(android.content.Intent.EXTRA_TEXT,
-                        "your sharing text");
-        shareIntent.putExtra(android.content.Intent.EXTRA_STREAM, pngUri); // Share
-        // the
-        // image
-        // on
-        // Facebook
-        PackageManager pm = getApplicationContext().getPackageManager();
-        List<ResolveInfo> activityList = pm.queryIntentActivities(shareIntent, 0);
-        int c = 0;
-        for (final ResolveInfo app : activityList) {
-            if ((app.activityInfo.name).contains(sharingapp)) {
-                c++;
-                final ActivityInfo activity = app.activityInfo;
-                final ComponentName name = new ComponentName(
-                        activity.applicationInfo.packageName, activity.name);
-                shareIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-                shareIntent.setComponent(name);
-                startActivity(shareIntent);
-                break;
-            }
-
+        Bitmap bitmap = getBitmapFromView(dotView);
+        saveBitmap(bitmap);
+        File imagePath = new File(this.getCacheDir(), "images");
+        File newFile = new File(imagePath, "image.png");
+        Uri contentUri = FileProvider.getUriForFile(this, "kmitl.lab03.nathapath58070040.simplemydot.fileprovider", newFile);
+        if (contentUri != null) {
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); // temp permission for receiving app to read this file
+            shareIntent.setDataAndType(contentUri, getContentResolver().getType(contentUri));
+            shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
+            startActivity(Intent.createChooser(shareIntent, "Choose an app"));
         }
-        if (c == 1)
-            c = 0;
-        else {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(
-                    context);
-            alertDialog.setTitle("Alert");
-            alertDialog.setMessage("You don't have " + sharingapp
-                    + " installed.");
-            alertDialog.setPositiveButton("OK",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog,
-                                            int which) {
-                            dialog.dismiss();
-
-                        }
-                    });
-            alertDialog.show();
-        }
-
     }
+
+    public static Bitmap getBitmapFromView(View view) {
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(returnedBitmap);
+        Drawable bgDrawable = view.getBackground();
+        if (bgDrawable != null)
+            bgDrawable.draw(canvas);
+        else
+            canvas.drawColor(Color.WHITE);
+        view.draw(canvas);
+        return returnedBitmap;
+    }
+
+    private void saveBitmap(Bitmap bitmap) {
+        try {
+            File cachePath = new File(this.getCacheDir(), "images");
+            cachePath.mkdirs();
+            FileOutputStream stream = new FileOutputStream(cachePath + "/image.png");
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
 
 
