@@ -42,4 +42,16 @@ public class Dot {
     public int getColor() {
         return color;
     }
+
+    public int getRadius() {
+        return radius;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
 }

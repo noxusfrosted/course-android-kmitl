@@ -11,20 +11,14 @@ import java.util.Random;
  */
 
 public class Colors {
-    private List<Integer> colorList = new ArrayList<>();
+    public int createColor() {
+        Random random = new Random();
+        int red = random.nextInt(255);
+        int green = random.nextInt(255);
+        int blue = random.nextInt(255);
 
-    public Colors(){
-        colorList.add(Color.RED);
-        colorList.add(Color.GREEN);
-        colorList.add(Color.BLUE);
-        colorList.add(Color.CYAN);
-        colorList.add(Color.GRAY);
-        colorList.add(Color.MAGENTA);
-        colorList.add(Color.YELLOW);
+        return Color.rgb(red, green, blue);
     }
 
-    public int getColor(){
-        return colorList.get(
-                new Random().nextInt(colorList.size()));
-    }
+
 }

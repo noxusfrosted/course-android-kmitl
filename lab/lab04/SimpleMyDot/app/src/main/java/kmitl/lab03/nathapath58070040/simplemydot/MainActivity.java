@@ -1,6 +1,8 @@
 package kmitl.lab03.nathapath58070040.simplemydot;
 
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -11,8 +13,10 @@ import android.os.Bundle;
 
 import android.support.v4.content.FileProvider;
 
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 
 import java.io.File;
@@ -23,6 +27,7 @@ import java.util.Random;
 
 import kmitl.lab03.nathapath58070040.simplemydot.model.Colors;
 import kmitl.lab03.nathapath58070040.simplemydot.model.Dot;
+import kmitl.lab03.nathapath58070040.simplemydot.model.DotParcelable;
 import kmitl.lab03.nathapath58070040.simplemydot.model.Dots;
 import kmitl.lab03.nathapath58070040.simplemydot.view.DotView;
 
@@ -57,7 +62,8 @@ public class MainActivity extends AppCompatActivity
         Random random = new Random();
         int centerX = random.nextInt(dotView.getWidth());
         int centerY = random.nextInt(dotView.getHeight());
-        Dot newDot = new Dot(centerX, centerY, 30, new Colors().getColor());
+        int radius = 60-random.nextInt(30);
+        Dot newDot = new Dot(centerX, centerY, radius, new Colors().createColor());
         dots.addDot(newDot);
     }
 
@@ -78,12 +84,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onDotViewPressed(int x, int y) {
+        Random random = new Random();
+        int radius = 60-random.nextInt(30);
         int dotPosition = dots.findDot(x, y);
         if (dotPosition == -1) {
-            Dot newDot = new Dot(x, y, 30, new Colors().getColor());
+            Dot newDot = new Dot(x, y, radius, new Colors().createColor());
             dots.addDot(newDot);
         } else {
-            dots.removeBy(dotPosition);
+            alertDialog(dotPosition);
         }
 
     }
@@ -127,6 +135,44 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
     }
+
+    public void alertDialog(final int dotPosition) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this);
+        alertDialogBuilder.setTitle("Hello ! Select Edit or Delete");
+        alertDialogBuilder
+                .setMessage("")
+                .setCancelable(true)
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dots.removeBy(dotPosition);
+                        Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Edit", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        DotParcelable dotParcelable = new DotParcelable(dotPosition, dots.getAllDot().get(dotPosition).getColor(), dots.getAllDot().get(dotPosition).getRadius());
+                        Intent editActIntent = new Intent(MainActivity.this, EditActivity.class);
+                        editActIntent.putExtra("dotParcelable", dotParcelable);
+                        startActivityForResult(editActIntent, 1);
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            DotParcelable dotParcelable = data.getParcelableExtra("reDotParcelable");
+            if (resultCode == Activity.RESULT_OK) {
+                dots.getAllDot().get(dotParcelable.getDotPosition()).setColor(dotParcelable.getColor());
+            } else {
+                dots.getAllDot().get(dotParcelable.getDotPosition()).setRadius(dotParcelable.getRadius());
+            }
+        }
+    }
+
 
 
 }
