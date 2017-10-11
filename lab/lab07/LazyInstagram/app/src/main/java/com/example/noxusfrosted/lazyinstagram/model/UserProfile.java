@@ -1,4 +1,6 @@
-package com.example.noxusfrosted.lazyinstagram;
+package com.example.noxusfrosted.lazyinstagram.model;
+
+import com.example.noxusfrosted.lazyinstagram.model.PostModel;
 
 import java.util.List;
 
@@ -7,7 +9,7 @@ import java.util.List;
  */
 
 
-class UserProfile {
+public class UserProfile {
     private int following;
     private boolean isFollow;
     private int post;

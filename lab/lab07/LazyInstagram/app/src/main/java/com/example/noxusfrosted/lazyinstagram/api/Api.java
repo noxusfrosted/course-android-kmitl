@@ -1,4 +1,6 @@
-package com.example.noxusfrosted.lazyinstagram;
+package com.example.noxusfrosted.lazyinstagram.api;
+
+import com.example.noxusfrosted.lazyinstagram.model.UserProfile;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

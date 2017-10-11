@@ -20,11 +20,16 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:orientation="vertical">
-            <TextView
-                android:id="@+id/textUser"
+            <!--<TextView-->
+                <!--android:id="@+id/textUser"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="name" />-->
+            <Spinner
+                android:id="@+id/spinner"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="name" />
+                android:layout_height="wrap_content" />
+
             <include layout="@layout/sub_profile_detail" />
             <TextView
                 android:id="@+id/textBio"
@@ -35,6 +40,7 @@
                 android:text="Bio : bla bla bla" />
         </LinearLayout>
     </LinearLayout>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list"

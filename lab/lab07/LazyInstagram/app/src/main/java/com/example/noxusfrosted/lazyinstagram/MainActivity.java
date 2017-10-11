@@ -4,24 +4,41 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.example.noxusfrosted.lazyinstagram.adapter.PostAdapter;
+import com.example.noxusfrosted.lazyinstagram.api.Api;
+import com.example.noxusfrosted.lazyinstagram.model.UserProfile;
+
+import java.util.ArrayList;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  implements AdapterView.OnItemSelectedListener {
 
+    private Spinner accountSpinner;
     private String user = "android";
+    private ArrayList<String> account = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        accountSpinner = findViewById(R.id.spinner);
+        createAccount();
+        ArrayAdapter<String> adapterAccount = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, account);
+        accountSpinner.setAdapter(adapterAccount);
+        accountSpinner.setOnItemSelectedListener(this);
         getUserProfile(user);
     }
 
@@ -36,13 +53,12 @@ public class MainActivity extends AppCompatActivity {
         api.getProfile(name).enqueue(new retrofit2.Callback<UserProfile>() {
             @Override
             public void onResponse(retrofit2.Call<UserProfile> call, retrofit2.Response<UserProfile> response) {
-                //Log.d(TAG, "onResponse: " + response.body());
                 UserProfile userProfile = response.body();
                 display(userProfile);
             }
             @Override
             public void onFailure(retrofit2.Call<UserProfile> call, Throwable t) {
-                //Log.d(TAG, "onFailure");
+
             }
         });
     }
@@ -54,14 +70,15 @@ public class MainActivity extends AppCompatActivity {
         Glide.with(this).load(userProfile.getUrlProfile()).into(imageProfile);
 
 
-        TextView textUser = findViewById(R.id.textUser);
-        textUser.setText("@"+userProfile.getUser());
+
+
+        Glide.with(MainActivity.this).load(userProfile.getUrlProfile()).into(imageProfile);
         TextView textPost = findViewById(R.id.textPost);
-        textPost.setText("Post\n"+userProfile.getPost());
+        textPost.setText("Post\n" + userProfile.getPost());
+        TextView textFollowing = findViewById(R.id.textFollowing);
+        textFollowing.setText("Following\n" + userProfile.getFollowing());
         TextView textFollower = findViewById(R.id.textFollower);
-        textFollower.setText("Follower\n"+userProfile.getFollower());
-        TextView textFollwing = findViewById(R.id.textFollwing);
-        textFollwing.setText("Following\n"+userProfile.getFollowing());
+        textFollower.setText("Follower\n" + userProfile.getFollower());
         TextView textBio = findViewById(R.id.textBio);
         textBio.setText(userProfile.getBio());
 
@@ -71,11 +88,39 @@ public class MainActivity extends AppCompatActivity {
         adapter.setData(userProfile.getPosts());
         list.setAdapter(adapter);
 
+
+
+
     }
 
-    //public void onResponse(retrofit2.Call<UserProfile> call, retrofit2.Response<UserProfile> response) {
-    //   display(response.body());
 
-    //}
+
+    public void createAccount(){
+        account.add("@android");
+        account.add("@nature");
+        account.add("@cartoon");
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        String item = adapterView.getItemAtPosition(i).toString();
+        switch (item) {
+            case "@android":
+                user = "android";
+                break;
+            case "@cartoon":
+                user = "cartoon";
+                break;
+            default:
+                user = "nature";
+                break;
+        }
+        getUserProfile(user);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
 
 }

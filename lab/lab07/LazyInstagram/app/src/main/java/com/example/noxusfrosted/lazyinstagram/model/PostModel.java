@@ -1,4 +1,4 @@
-package com.example.noxusfrosted.lazyinstagram;
+package com.example.noxusfrosted.lazyinstagram.model;
 
 /**
  * Created by Noxusfrosted on 10/10/2017.
