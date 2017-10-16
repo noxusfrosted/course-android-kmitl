@@ -20,7 +20,7 @@ import java.util.List;
  */
 
 class Holder extends RecyclerView.ViewHolder {
-    
+
     public ImageView image;
     public TextView textLike;
     public TextView textComment;
@@ -40,6 +40,7 @@ public class PostAdapter  extends RecyclerView.Adapter<Holder> {
 
     private Activity activity;
     private List<PostModel> data;
+    private String layoutType;
 
     public PostAdapter(Activity activity) {
         this.activity = activity;
@@ -50,11 +51,25 @@ public class PostAdapter  extends RecyclerView.Adapter<Holder> {
         this.data = data;
     }
 
+
+    public void setLayoutType(String layoutType) {
+        this.layoutType = layoutType;
+    }
+
+
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, null);
-        Holder holder = new Holder(itemView);
-        return holder;
+        View view;
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        if (layoutType.equals("grid")) {
+            view = inflater.inflate(R.layout.grid_item, null, false);
+            Holder holder = new Holder(view);
+            return holder;
+        } else {
+            view = inflater.inflate(R.layout.list_item, null, false);
+            Holder holder = new Holder(view);
+            return holder;
+        }
     }
 
     @Override

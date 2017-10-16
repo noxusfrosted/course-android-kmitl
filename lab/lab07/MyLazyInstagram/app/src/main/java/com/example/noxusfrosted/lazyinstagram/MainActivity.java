@@ -3,6 +3,7 @@ package com.example.noxusfrosted.lazyinstagram;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,6 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity  implements AdapterView.OnItemSelectedListener {
 
     private Spinner accountSpinner;
+    private String layoutType = "grid";
     private String user = "android";
     private ArrayList<String> account = new ArrayList<>();
 
@@ -83,9 +85,14 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         textBio.setText(userProfile.getBio());
 
         RecyclerView list = findViewById(R.id.list);
-        list.setLayoutManager(new GridLayoutManager(this, 3));
+        if (layoutType.equals("grid")) {
+            list.setLayoutManager(new GridLayoutManager(this, 3));
+        } else{
+            list.setLayoutManager(new LinearLayoutManager(this));
+        }
         PostAdapter adapter = new PostAdapter(this);
         adapter.setData(userProfile.getPosts());
+        adapter.setLayoutType(layoutType);
         list.setAdapter(adapter);
 
 
@@ -115,6 +122,16 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
                 user = "nature";
                 break;
         }
+        getUserProfile(user);
+    }
+
+    public void onGrid(View view) {
+        layoutType = "grid";
+        getUserProfile(user);
+    }
+
+    public void onList(View view) {
+        layoutType = "list";
         getUserProfile(user);
     }
 
