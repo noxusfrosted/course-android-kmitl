@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context="com.example.noxusfrosted.moneyflow.EditActivity">
+
+    <TextView
+        android:id="@+id/textViewType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/type"
+        android:textSize="30sp" />
+
+    <ToggleButton
+        android:id="@+id/toggleType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:onClick="changeType"
+        android:text="@string/togglebutton"
+        android:textOff="@string/income"
+        android:textOn="@string/expense" />
+
+
+
+    <TextView
+        android:id="@+id/textViewOrder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/order"
+        android:textSize="30sp"/>
+
+    <EditText
+        android:id="@+id/editTextOrder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/order"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/textViewAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/amount"
+        android:textSize="30sp" />
+
+    <EditText
+        android:id="@+id/editTextAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/amount"
+        android:digits="0123456789."
+        android:inputType="textPersonName|numberDecimal"/>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/buttonSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onSubmitEdit"
+            android:text="@string/submit"/>
+
+        <Button
+            android:id="@+id/buttonDelete"
+            android:layout_width="88dp"
+            android:layout_height="48dp"
+            android:text="@string/delete"
+            android:onClick="onDelete"/>
+
+        <Button
+            android:id="@+id/buttonCancle"
+            android:layout_width="88dp"
+            android:layout_height="48dp"
+            android:text="@string/cancel"
+            android:onClick="onCancel"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

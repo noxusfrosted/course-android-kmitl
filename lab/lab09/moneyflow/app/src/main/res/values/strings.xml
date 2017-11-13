@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">moneyflow</string>
+    <string name="add">add</string>
+    <string name="order">Order</string>
+    <string name="expense">Expense</string>
+    <string name="income">Income</string>
+    <string name="type">Type</string>
+    <string name="togglebutton">ToggleButton</string>
+    <string name="amount">Amount</string>
+    <string name="submit">submit</string>
+    <string name="delete">delete</string>
+    <string name="cancel">cancel</string>
+</resources>
