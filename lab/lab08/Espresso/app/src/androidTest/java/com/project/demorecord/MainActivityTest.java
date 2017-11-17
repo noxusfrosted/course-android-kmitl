@@ -48,6 +48,8 @@ public class MainActivityTest {
         onView(withId(android.R.id.message)).check(matches(withText("Please Enter user info")));
         SystemClock.sleep(1000);
 
+
+
     }
 
 
@@ -95,26 +97,7 @@ public class MainActivityTest {
 
     }
 
-    @Test
-    public void testCase6() {
-        SystemClock.sleep(1000);
-        onView(withId(R.id.editTExtName)).perform(replaceText("Ying"), closeSoftKeyboard());
-        onView(withId(R.id.editTextAge)).perform(replaceText("20"), closeSoftKeyboard());
-        onView(withId(R.id.buttonAdded)).perform(click());
-        onView(withId(R.id.editTExtName)).perform(replaceText("Ladarat"), closeSoftKeyboard());
-        onView(withId(R.id.editTextAge)).perform(replaceText("20"), closeSoftKeyboard());
-        SystemClock.sleep(1000);
 
-        onView(withId(R.id.buttonAdded)).perform(click());
-        onView(withId(R.id.buttonGotoList)).perform(click());
-
-        onView(withRecyclerView(R.id.list)
-                .atPositionOnView(1, R.id.textName))
-                .check(matches(withText("Ladarat")));
-        onView(withRecyclerView(R.id.list)
-                .atPositionOnView(1, R.id.textAge))
-                .check(matches(withText("20")));
-    }
 
     @Test
     public void testCase7() {
